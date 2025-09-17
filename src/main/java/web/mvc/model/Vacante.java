@@ -53,8 +53,8 @@ public class Vacante {
 	private Date fecha;
 	
 	@Valid
-	@NotNull
-	//@NotNull(message = "El salario es obligatorio")
+	//@NotNull
+	@NotNull(message = "El salario es obligatorio")
 	//@DecimalMin(value = "0.0", message = "El salario debe ser mayor o igual a 0")
 	@Column( name = "salario", nullable = false ) 
 	@Comment( "Salario ofrecido por la vacante" )
