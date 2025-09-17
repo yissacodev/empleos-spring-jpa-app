@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> <!-- Usar el espacio de nombres  -->
+	<head>
+		<meta charset="ISO-8859-1">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		<title>Listado de Vacantes</title>
+	</head>
+	<body>
+		<header th:insert="~{fragments/navbar :: menu}" class="container-fluid"> </header>
+		
+		<img th:src="@{/img/logo.png}" width="130" height="130">
+		<h1>Lista de Vacantes</h1>
+		<table class="table table-striped" style="width: 100%;">
+		  <tr>
+			<th>Logo</th>
+		    <th>Id</th>
+		    <th>Nombre</th>
+		    <th>Fecha de Publicación</th>
+		    <th>Salario</th>
+		    <th>Descripción</th>
+		    <th>Descatada</th>
+		    <th>Opciones</th>
+		  </tr>
+		  
+		  <tr th:each="vacante : ${vacantes}">
+			<td>
+				<img th:src="@{/img/{img} ( img = ${vacante.imagen} ) }" width="200px">
+			</td>
+		    <td th:text="${vacante.id}"></td>
+		    <td th:text="${vacante.nombre}"></td>
+		    <td th:text="${vacante.fecha}"></td>
+		    <td th:text="${vacante.salario}"></td>
+		    <td th:text="${vacante.descripcion}"></td>
+		    
+		    <!-- Condicional  Ternario 
+		    <td th:text="${vacante.destacado == 1 ? 'Si' : 'No'}"></td>
+		    -->
+		    <td>
+			<!-- If else-->
+			     <span th:if="${  vacante.destacado == 1 }" class="badge bg-secondary">Si</span>
+			     <span th:unless="${ vacante.destacado == 1 }" class="badge bg-danger">No</span>
+		     </td>
+		     
+		     <td>
+				 <a th:href="@{ /vacantes/view/{id} ( id = ${vacante.id})  }" class="btn btn-success">Detalle</a>
+				 <a th:href="@{ /vacantes/delete( id = ${vacante.id})  }" class="btn btn-danger">Eliminar</a>
+			 </td>
+		  </tr>
+		  
+		</table>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> <!-- Usar el espacio de nombres  -->
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Principal</title>
+	</head>
+	
+	<body>
+		<h1>Vacantes disponibles</h1> 
+		
+		<ol>
+			<!-- Recorrer la lista Empleos 
+				Recorrido Variable			Mostrar elemento-->
+			<li th:each="tmpEmp:${empleos}" th:text=${tmpEmp}></li> 
+		</ol>
+	</body>
+</html>
