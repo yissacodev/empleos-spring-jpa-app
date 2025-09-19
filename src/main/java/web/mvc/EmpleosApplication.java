@@ -1,6 +1,8 @@
 package web.mvc;
 
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +13,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import web.mvc.enumeration.VacanteEstatus;
 import web.mvc.model.Categoria;
+import web.mvc.model.Perfil;
 import web.mvc.model.Vacante;
 import web.mvc.repository.CategoriasRepository;
+import web.mvc.repository.PerfilRepository;
+import web.mvc.repository.UsuariosRepository;
 import web.mvc.repository.VacantesRepository;
 
 @SpringBootApplication
@@ -27,14 +32,22 @@ public class EmpleosApplication implements CommandLineRunner{
 	@Autowired
 	private CategoriasRepository categoriasRepo;
 	
+	@Autowired
+	private UsuariosRepository usuariosRepo;
+	
+	@Autowired
+	private PerfilRepository  perfilRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EmpleosApplication.class, args);
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
-		
+	public void run(String... args) throws Exception {		
+		crearPerfilesAplicacion();
+	}
+	
+	private void crearVacantes() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		try {
 			Vacante vacante = new Vacante();
@@ -106,8 +119,9 @@ public class EmpleosApplication implements CommandLineRunner{
 			logger.error("Ha ocurrido el siguiente Error: " + e.getMessage());
 		}
 		
-		
-		//---------------------------------------
+	}
+	
+	private void crearCategorias() {
 		try {
 			Categoria categoria1 = new Categoria();
 			categoria1.setNombre("Arquitectura");
@@ -183,19 +197,37 @@ public class EmpleosApplication implements CommandLineRunner{
 			categoriasRepo.save( categoria14 );
 			categoriasRepo.save( categoria15 );
 			categoriasRepo.save( categoria16 );
-
-		} catch (Exception e) {
+		}  catch (Exception e) {
 			logger.error("Ha ocurrido el siguiente Error: " + e.getMessage());
 		}
 		logger.info("Categorias han sido guardadas!");
-		
-		
-		
-		
 	}
 	
-	public void metodosRepositorio() {
+	private void metodosRepositorio() {
 		//Aquí práctica de algunos métodos de repositorios
+	}
+	
+	private void crearPerfilesAplicacion() {
+		perfilRepo.saveAll(getPerfilesAplicacion());
+	}
+	
+	private List<Perfil> getPerfilesAplicacion(){
+		List<Perfil> lista = new LinkedList<Perfil>();
+		Perfil per1 = new Perfil();
+		per1.setPerfil("SUPERVISOR");
+		
+		Perfil per2 = new Perfil();
+		per2.setPerfil("ADMINISTRADOR");
+		
+		Perfil per3 = new Perfil();
+		per3.setPerfil("USUARIO");
+		
+		lista.add(per1);
+		lista.add(per2);
+		lista.add(per3);
+		
+		return lista;
+		
 	}
 	
 	

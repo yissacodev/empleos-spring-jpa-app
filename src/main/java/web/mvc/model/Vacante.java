@@ -84,6 +84,7 @@ public class Vacante {
 	@JoinColumn( name = "categoria", nullable = false )
 	@NotNull
 	@Comment( "Categoria en que se clasifica la vacante" )
+	//@Transient //Ignora este atributo para no mapear Categorias
 	private Categoria categoria;
 	
 	@OneToMany(mappedBy = "vacante", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

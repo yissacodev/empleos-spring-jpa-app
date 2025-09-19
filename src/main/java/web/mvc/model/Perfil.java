@@ -18,6 +18,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 
 @Entity
@@ -28,11 +30,10 @@ public class Perfil {
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Integer id;
 	
-	@Null
+	@NotNull
 	@Column( name = "perfil", length = 100 )
 	private String perfil;
 	
-
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinTable(
 			name = "usuario_perfil",
@@ -52,8 +53,66 @@ public class Perfil {
 	@CreationTimestamp
 	private Date createdOn;
 	
+	
+	public Perfil(Integer id, @Null String perfil, List<Usuario> usuarios, Date updatedOn, Date createdOn) {
+		super();
+		this.id = id;
+		this.perfil = perfil;
+		this.usuarios = usuarios;
+		this.updatedOn = updatedOn;
+		this.createdOn = createdOn;
+	}
+
 	public Perfil() {
 		// TODO Auto-generated constructor stub
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
+	}
+
+	public Date getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(Date updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	@Override
+	public String toString() {
+		return "Perfil [id=" + id + ", perfil=" + perfil + ", usuarios=" + usuarios + ", updatedOn=" + updatedOn
+				+ ", createdOn=" + createdOn + "]";
+	}
+	
+	
 
 }
