@@ -1,8 +1,11 @@
 package web.mvc;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import web.mvc.controller.HomeController;
 import web.mvc.enumeration.VacanteEstatus;
 import web.mvc.model.Categoria;
 import web.mvc.model.Perfil;
+import web.mvc.model.Usuario;
 import web.mvc.model.Vacante;
 import web.mvc.repository.CategoriasRepository;
 import web.mvc.repository.PerfilRepository;
@@ -22,6 +26,8 @@ import web.mvc.repository.VacantesRepository;
 
 @SpringBootApplication
 public class EmpleosApplication implements CommandLineRunner{
+
+    private final HomeController homeController;
 	
 	//Logger para mostrar los logs de esta clase
 	Logger logger = LoggerFactory.getLogger(EmpleosApplication.class);
@@ -38,13 +44,95 @@ public class EmpleosApplication implements CommandLineRunner{
 	@Autowired
 	private PerfilRepository  perfilRepo;
 
+    EmpleosApplication(HomeController homeController) {
+        this.homeController = homeController;
+    }
+
 	public static void main(String[] args) {
 		SpringApplication.run(EmpleosApplication.class, args);
 	}
 
 	@Override
-	public void run(String... args) throws Exception {		
-		crearPerfilesAplicacion();
+	public void run(String... args) throws Exception {
+		//crearVacantes();
+		//crearPerfilesAplicacion();
+		//crearUsuarioConDosPerfil();
+		//buscarUsuarios();
+		//buscarVacantesPorEstatus();
+		//buscarVacantesPorDestacadoEstatus();
+		//buscarVacantesSalario();
+		buscarVacantesVariosEstatud();
+	}
+	
+	private void buscarVacantesVariosEstatud() {
+		// TODO Auto-generated method stub
+		VacanteEstatus[] estatus = new VacanteEstatus[] {VacanteEstatus.APROBADA, VacanteEstatus.PENDIENTE};
+		List<Vacante> lista = vacantesRepo.findByEstatusIn(estatus);
+		for (Vacante v: lista) {
+			System.out.println(v.getId() + ": " + v.getNombre() + ": " + v.getEstatus());
+		}
+		
+	}
+	
+	private void buscarVacantesSalario() {
+		// TODO Auto-generated method stub
+		List<Vacante> lista = vacantesRepo.findBySalarioBetween(12000, 15000);
+		for (Vacante v: lista) {
+			System.out.println(v.getId() + ": " + v.getNombre() + ": $" + v.getSalario());
+		}
+		
+	}
+	
+	private void buscarVacantesPorDestacadoEstatus() {
+		// TODO Auto-generated method stub
+		List<Vacante> lista = vacantesRepo.findByDestacadoAndEstatusOrderByIdDesc(1, VacanteEstatus.APROBADA);
+		for (Vacante v: lista) {
+			System.out.println(v.getId() + ": " + v.getNombre() + ": " + v.getEstatus() + ":" + v.getDestacado());
+		}
+	}
+	
+	private void buscarVacantesPorEstatus() {
+		// TODO Auto-generated method stub
+		List<Vacante> lista = vacantesRepo.findByEstatus(VacanteEstatus.PENDIENTE);
+		for (Vacante v: lista) {
+			System.out.println(v.getId() + ": " + v.getNombre() + ": " + v.getEstatus());
+		}
+	}
+	
+	private void buscarUsuarios() {
+		Optional<Usuario> optional = usuariosRepo.findById(1);
+		if(optional.isPresent()) {
+			Usuario u = optional.get();
+			System.out.println("Usuario: " + u.getNombre());
+			System.out.println("Perfiles asignados: ");
+			for (Perfil p : u.getPerfiles()) {
+				System.out.println(p.getPerfil());
+			}
+		}
+		else {
+			System.out.println("Usuario no encontrado");
+
+		}
+	}
+	
+	private void crearUsuarioConDosPerfil() {
+		Usuario user = new Usuario();
+		user.setNombre("Yessid Acosta");
+		user.setEmail("yissacodev@mail.com");
+		user.setCreatedOn(new Date());
+		user.setUsername("yacosta");
+		user.setPassword("oresama9523");
+		user.setEstatus(1);
+		
+		Perfil per1 = new Perfil();
+		per1.setId(1);
+		Perfil per2 = new Perfil();
+		per2.setId(2);
+		
+		user.agregar(per1);
+		user.agregar(per2);
+		
+		usuariosRepo.save(user);
 	}
 	
 	private void crearVacantes() {

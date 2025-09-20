@@ -39,8 +39,7 @@ public class Perfil {
 			name = "usuario_perfil",
 			joinColumns = @JoinColumn( name = "perfil_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn( name = "usuario_id", referencedColumnName = "id")
-	)
-	
+	)	
 	private List<Usuario> usuarios;
 	
 	
